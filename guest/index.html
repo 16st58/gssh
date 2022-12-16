@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta name="color-scheme" content="light only"/>
+        <meta name="supported-color-schemes" content="light"/>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>gssh 쿠폰 발행</title>
+        <link rel="stylesheet" href="css/main.css" />
+    </head>
+    <body>
+
+        <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+        <script type="text/javascript" src="js\jquery-barcode.js"></script>
+        <script type="text/javascript" src="js\qrcode.js"></script>
+        <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+
+        <div id="title">QR코드</div>
+
+        <div id="g_id_onload"
+         data-client_id="509820375172-u6v9d1occckq49dia67nrejfs0vj8jmh.apps.googleusercontent.com"
+         data-callback="handleCredentialResponse"></div>
+        <div class="g_id_signin" data-shape="circle" ></div>
+        
+        <div id="container">
+            <div id="barcodeTarget"><img id="pleaseLogin" style="width: 100%;" src="\image\pleaseqrcode.png"></div>
+        </div>
+
+        
+        <div id="container">
+            <div style="overflow: hidden;">
+                <div class="coupon">
+                    <div style="width: fit-content; font-weight: 100;  font-size: small;">현재 포인트</div>
+                    <div class="css_coupon_price" id="couponPrice">0</div>
+                    <div class="css_coupon_price"> 원</div>
+                </div>
+
+                <button id="round_button" onclick="show()">사용하기</button>
+            </div>
+        </div>
+
+        <div id="container">
+            부스 추천
+            <div id='boothList' style="margin-top: 16px;"></ul>
+        </div>
+
+        <!--팝업창-->
+        <div class="background">
+            <div class="window">
+            <div class="popup">
+                <div id="popup_head">포인트 사용하기</div>
+                <div id="popup_content">포인트를 사용하게 될 경우 사용한 포인트는 소진돼요.<br>한 번 사용한 포인트는 다시 받을 수 없어요.</div>
+                <div class="input-area">
+                    <input id="input" type="number">
+                    <label for="input" class="placeholder">사용할 포인트 입력</label>
+                </div>
+                <div id="error_snackbar">사용할 보인트가 보유하고 있는 포인트보다 작아야 해요.</div>
+                <div class="button_area">
+                    <button id="close">취소</button>
+                    <button id="use_point">사용하기</button>
+                </div>
+            </div>
+            <div>
+                <div></div>
+            </div>
+            </div>
+        </div>
+
+        <!-- 스낵바 -->
+        <div id="get_coupon_snackbar">포인트를 획득했어요.</div>
+
+        <script src="js/confetti.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-database.js"></script>
+        <script src = "https://www.gstatic.com/firebasejs/8.6.5/firebase-analytics.js"></script>
+
+        <script type="text/javascript">
+        /*
+        *파이어 베이스 초기화
+        */
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+        apiKey: "AIzaSyAQatE3aKO9EMogKLPgRId4hxZqOMP7B3A",
+        authDomain: "ticket-4321c.firebaseapp.com",
+        databaseURL: "https://ticket-4321c-default-rtdb.firebaseio.com",
+        projectId: "ticket-4321c",
+        storageBucket: "ticket-4321c.appspot.com",
+        messagingSenderId: "636994352834",
+        appId: "1:636994352834:web:6376056d351f3f12866d5b",
+        measurementId: "G-48NWD8TXVK"
+        };
+    
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        //firebase.getAnalytics(app);
+        </script>
+        
+        <script type="text/javascript">
+
+
+        var isFirst = false
+        
+        function handleCredentialResponse(response) {
+            // decodeJwtResponse() is a custom function defined by you
+            // to decode the credential response.
+            responsePayload = parseJwt(response.credential);
+
+            //console.log("ID: " + responsePayload.sub);
+            //console.log('Full Name: ' + responsePayload.name);
+            //console.log('Given Name: ' + responsePayload.given_name);
+            //console.log('Family Name: ' + responsePayload.family_name);
+            //console.log("Image URL: " + responsePayload.picture);
+            //console.log("Email: " + responsePayload.email); 
+
+            generateBarcode(responsePayload.sub);
+
+            var DBref = firebase.database().ref("/user/"+responsePayload.sub+"/쿠폰");
+            DBref.on('value', (snapshot) => {
+                /*
+                * 꽃가루 효과
+                */
+                if(snapshot.val() > Number(document.getElementById('couponPrice').innerText) && isFirst == true) {
+                    /*
+                    * 포인트 획득 
+                    */var x = document.getElementById("get_coupon_snackbar");
+
+                    // Add the "show" class to DIV
+                    x.className = "show";
+
+                    // After 3 seconds, remove the show class from DIV
+                    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
+
+
+                    const start = () => {
+                        setTimeout(function() {
+                            confetti.start()
+                        }, 1000); // 1000 is time that after 1 second start the confetti ( 1000 = 1 sec)
+                    };
+
+                    //  for stopping the confetti 
+
+                    const stop = () => {
+                        setTimeout(function() {
+                            confetti.stop()
+                        }, 5000); // 5000 is time that after 5 second stop the confetti ( 5000 = 5 sec)
+                    };
+                    // after this here we are calling both the function so it works
+                    start();
+                    stop();
+                }
+                isFirst = true
+
+                /*
+                * 글씨 바꿈
+                */
+                if ( snapshot.val() ){
+                    $("#couponPrice").text(snapshot.val().toString());
+                } else {
+                    $("#couponPrice").text("0");
+                }
+            });
+
+            var DBref = firebase.database().ref("/data/총 방문 회원 수");
+            DBref.on('value', (snapshot) => {
+                
+                var peopleNumber = {}
+                var starCountRef = firebase.database().ref('/data/최근 방문 회원 수');
+                starCountRef.get().then((snapshot) => {
+                    if (snapshot.exists()) {
+                        peopleNumber = snapshot.val();
+                        console.log(peopleNumber);
+                                
+                        //정렬
+                        const arr = [];
+                        for(let i in snapshot.val()) {
+                            arr.push([i, snapshot.val()[i]]);
+                        }
+                        
+                        $('#boothList').empty();
+
+                        for(let i in arr.sort((a, b) => a[1] - b[1])) {
+                            const Value = arr.sort((a, b) => a[1] - b[1])[i][0]
+
+                            const contentBody = document.getElementById('boothList')
+                            const bodySection = document.createElement('div');
+                            const viewText = document.createElement('div');
+                            const congestionviewText = document.createElement('div');
+                            bodySection.className = 'content-body__section';
+                            viewText.className = 'viewText';
+                            congestionviewText.className = 'dellIcon';
+
+                            contentBody.appendChild(bodySection);
+                            bodySection.appendChild(viewText);
+                            bodySection.appendChild(congestionviewText);
+
+                            const span = document.createElement('span');
+                            const spandocument = document.createElement('span');
+
+                            bodySection.style.display = 'flex';
+                            bodySection.style.justifyContent = 'space-between';
+                            bodySection.style.paddingTop = "10px";
+                            bodySection.style.paddingBottom = "10px";
+                            //span.className = 'toDoList';
+                            span.textContent = Value;
+                            //spandocument.className = 'far fa-trash-alt';
+                            if (peopleNumber[Value] > 10) {
+                                spandocument.textContent = "혼잡";
+                                spandocument.style.color = "#ff3e29";
+                            } else {
+                                spandocument.textContent = "여유";
+                                spandocument.style.color = "#07b018";
+                            }
+                            console.log(peopleNumber[Value]);
+
+                            viewText.appendChild(span);
+                            congestionviewText.appendChild(spandocument);
+                        }
+                    } else {
+                        console.log("No data available");
+                    }
+                    }).catch((error) => {
+                    console.error(error);
+                });
+            });
+        };
+
+
+        function parseJwt (token) {
+            var base64Url = token.split('.')[1];
+            var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+
+            return JSON.parse(jsonPayload);
+        };
+
+        function generateBarcode(text) {
+            $('#barcodeTarget').empty();
+            var qrcode = new QRCode(document.getElementById("barcodeTarget"), {
+                text: text,
+                width: window.innerWidth - 100,
+                height: window.innerWidth - 100,
+                colorDark : "#000000",
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.H
+            });
+            $("#barcodeTarget > img").css({"margin":"auto"});
+        }
+
+
+        /*
+         * 팝업창 
+         */
+         function show() {
+            document.querySelector(".background").className = "background show";
+        }
+
+        function close() {
+            document.querySelector(".background").className = "background";
+            document.getElementById('input').value = null;
+            document.getElementById("error_snackbar").style.display ='none';
+        }
+
+        $("#input").on("propertychange change keyup paste input", function(){
+            if(Number(document.getElementById('couponPrice').innerText) < Number(document.getElementById('input').value)) {
+                document.getElementById("error_snackbar").style.display ='block';
+                $("#error_snackbar").addClass("vibration_animation");
+            }
+        });
+
+        function use_point() {
+            var inputValue = document.getElementById('input').value;
+            var DBref = firebase.database().ref("/user/"+responsePayload.sub+"/쿠폰");
+            DBref.once('value', (snapshot) => {
+                if (Number(snapshot.val()) > Number(inputValue) && Number(inputValue) > 0) {
+                    firebase.database().ref("/user/"+responsePayload.sub).set({"쿠폰":Number(snapshot.val()-inputValue)});
+                    document.querySelector(".background").className = "background";
+                    document.getElementById('input').value = null;
+                    document.getElementById("error_snackbar").style.display ='none';
+                }
+            });
+        }
+
+        document.querySelector("#round_button").addEventListener("click", show);
+        document.querySelector("#close").addEventListener("click", close);
+        document.querySelector("#use_point").addEventListener("click", use_point);
+	
+        </script>
+    </body>
+</html>
