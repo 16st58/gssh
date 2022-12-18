@@ -1,4 +1,39 @@
-@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
+
+@font-face {
+    font-family: 'Spoqa Han Sans';
+    font-weight: 700;
+    src: local('Spoqa Han Sans Bold'),
+    url('guest\\font\\SpoqaHanSans\\SpoqaHanSans_subset\\SpoqaHanSansBold.woff2') format('woff2'),
+    url('guest\\font\\SpoqaHanSans\\SpoqaHanSans_subset\\SpoqaHanSansBold.woff') format('woff'),
+    url('guest\\font\\SpoqaHanSans\\SpoqaHanSans_subset\\Spoqa Han Sans Bold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Spoqa Han Sans';
+    font-weight: 400;
+    src: local('Spoqa Han Sans Regular'),
+    url('guest\\font\\SpoqaHanSans\\SpoqaHanSans_subset\\SpoqaHanSansRegular.woff2') format('woff2'),
+    url('guest\\font\\SpoqaHanSans\\SpoqaHanSans_subset\\SpoqaHanSans/SpoqaHanSansRegular.woff') format('woff'),
+    url('guest\\font\\SpoqaHanSans\\SpoqaHanSans_subset\\SpoqaHanSansRegular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Spoqa Han Sans';
+    font-weight: 300;
+    src: local('Spoqa Han Sans Light'),
+    url('guest\\font\\SpoqaHanSans\\SpoqaHanSans_subset\\SpoqaHanSansLight.woff2') format('woff2'),
+    url('guest\\font\\SpoqaHanSans\\SpoqaHanSans_subset\\SpoqaHanSansLight.woff') format('woff'),
+    url('guest\\font\\SpoqaHanSans\\SpoqaHanSans_subset\\SpoqaHanSansLight.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Spoqa Han Sans';
+    font-weight: 100;
+    src: local('Spoqa Han Sans Thin'),
+    url('guest\\font\\SpoqaHanSans\\SpoqaHanSans_subset\\SpoqaHanSansThin.woff2') format('woff2'),
+    url('guest\\font\\SpoqaHanSans\\SpoqaHanSans_subset\\SpoqaHanSansThin.woff') format('woff'),
+    url('guest\\font\\SpoqaHanSans\\SpoqaHanSans_subset\\SpoqaHanSansThin.ttf') format('truetype');
+}
 
 :root {
     color-scheme: light only;
