@@ -48,7 +48,7 @@
 
         <div id="container">
             <div style="font-weight: bold;">부스 추천</div>
-            <div id='boothList' style="margin-top: 16px;"></ul>
+            <div id='boothList' style="margin-top: 16px;"></div>
         </div>
 
         <!--팝업창-->
@@ -67,8 +67,17 @@
                     <button id="use_point">사용하기</button>
                 </div>
             </div>
-            <div>
-                <div></div>
+            </div>
+        </div>
+        
+        <div id="point_use_popup" class="background">
+            <div class="window">
+            <div class="popup" style="display: flex; flex-direction: column; align-items: center;">
+                <img src="\image\check.gif" style="width: 30%; text-align: center; margin-top: 10px;">
+                <div id="popup_head1" style="text-align: center;">0원을 사용했어요</div>
+                <div class="button_area" style="width: inherit;">
+                    <button id="point_use_close">닫기</button>
+                </div>
             </div>
             </div>
         </div>
@@ -270,6 +279,20 @@
             document.getElementById("error_snackbar").style.display ='none';
         }
 
+        /*
+         *포인트 사용시 팝업창 
+         */
+        function point_use_popup_show(use_point_value) {
+            console.log(use_point_value)
+            document.getElementById("point_use_popup").className = "background no_animation_show";
+            document.getElementById("popup_head1").innerText = use_point_value+"원을 사용했어요";
+        }
+
+        function point_use_popup_close() {
+            console.log("닫기")
+            document.getElementById("point_use_popup").className = "background";
+        }
+
         $("#input").on("propertychange change keyup paste input", function(){
             if(Number(document.getElementById('couponPrice').innerText) < Number(document.getElementById('input').value)) {
                 document.getElementById("error_snackbar").style.display ='block';
@@ -282,6 +305,7 @@
             var DBref = firebase.database().ref("/user/"+responsePayload.sub+"/쿠폰");
             DBref.once('value', (snapshot) => {
                 if (Number(snapshot.val()) > Number(inputValue) && Number(inputValue) > 0) {
+                    point_use_popup_show(Number(inputValue))
                     firebase.database().ref("/user/"+responsePayload.sub).set({"쿠폰":Number(snapshot.val()-inputValue)});
                     document.querySelector(".background").className = "background";
                     document.getElementById('input').value = null;
@@ -292,6 +316,7 @@
 
         document.querySelector("#round_button").addEventListener("click", show);
         document.querySelector("#close").addEventListener("click", close);
+        document.querySelector("#point_use_close").addEventListener("click", point_use_popup_close);
         document.querySelector("#use_point").addEventListener("click", use_point);
 	
         </script>
