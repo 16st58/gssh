@@ -45,12 +45,12 @@ def main():
             for i in readFirebaseJson:
                 for j in range(len(boothName)):
                     try:
-                        visitsNumber = int(readFirebaseJson[i][boothName[j]]['방문수'])
+                        visitsNumber = int(readFirebaseJson[i]["방문한부스"][boothName[j]]['방문수'])
                         memberNumber[boothName[j]]+=1
                         totalMemberNumber[boothName[j]] += visitsNumber
                         if visitsNumber > 1:
                             reMemberNumber[boothName[j]]+=1
-                        if time.time() - readFirebaseJson[i][boothName[j]]['방문시간'] < 60*5:
+                        if time.time() - readFirebaseJson[i]["방문한부스"][boothName[j]]['방문시간'] < 60*5:
                             recentMemberNumber[boothName[j]]+=1
                     except:
                         pass
