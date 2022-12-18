@@ -313,7 +313,7 @@
             var inputValue = document.getElementById('input').value;
             var DBref = firebase.database().ref("/user/"+responsePayload.sub+"/쿠폰");
             DBref.once('value', (snapshot) => {
-                if (Number(snapshot.val()) > Number(inputValue) && Number(inputValue) > 0) {
+                if (Number(snapshot.val()) >= Number(inputValue) && Number(inputValue) > 0) {
                     point_use_popup_show(Number(inputValue))
                     firebase.database().ref("/user/"+responsePayload.sub+"/쿠폰").set(Number(snapshot.val()-inputValue));
                     document.querySelector(".background").className = "background";
