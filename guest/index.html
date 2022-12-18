@@ -195,7 +195,16 @@
                         
                         $('#boothList').empty();
 
-                        for(let i in arr.sort((a, b) => a[1] - b[1])) {
+                        var n = 0;
+                        var sortlength = arr.sort((a, b) => a[1] - b[1]).lenth
+                        
+                        if (sortlength < 5) {
+                            n=sortlength
+                        } else {
+                            n=5
+                        }
+
+                        for(let i = 0; i < n; i++) {
                             const Value = arr.sort((a, b) => a[1] - b[1])[i][0]
 
                             const contentBody = document.getElementById('boothList')
@@ -306,7 +315,7 @@
             DBref.once('value', (snapshot) => {
                 if (Number(snapshot.val()) > Number(inputValue) && Number(inputValue) > 0) {
                     point_use_popup_show(Number(inputValue))
-                    firebase.database().ref("/user/"+responsePayload.sub).set({"쿠폰":Number(snapshot.val()-inputValue)});
+                    firebase.database().ref("/user/"+responsePayload.sub+"/쿠폰").set(Number(snapshot.val()-inputValue));
                     document.querySelector(".background").className = "background";
                     document.getElementById('input').value = null;
                     document.getElementById("error_snackbar").style.display ='none';

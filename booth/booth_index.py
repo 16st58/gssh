@@ -104,7 +104,7 @@ def read_barcodes(frame):
                             db.reference("user/" + barcode_info + "/쿠폰조건/").delete()
                     except:
                         nowCoupon = db.reference("user/" + barcode_info + "/쿠폰").get()
-                        updateDataToDatabase("user/" + barcode_info , "쿠폰", int(nowCoupon) + 100)
+                        updateDataToDatabase("user/" + barcode_info, "쿠폰", int(nowCoupon) + 100)
                         db.reference("user/" + barcode_info + "/쿠폰조건/").delete()
 
                 updateDataToDatabase("user/" + barcode_info + "/" + boothOwner + "/", "방문시간", time.time())
