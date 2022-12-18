@@ -6,6 +6,7 @@
     url('guest\\font\\SpoqaHanSans\\SpoqaHanSans_subset\\SpoqaHanSansBold.woff2') format('woff2'),
     url('guest\\font\\SpoqaHanSans\\SpoqaHanSans_subset\\SpoqaHanSansBold.woff') format('woff'),
     url('guest\\font\\SpoqaHanSans\\SpoqaHanSans_subset\\Spoqa Han Sans Bold.ttf') format('truetype');
+    font-display: swap;
 }
 
 @font-face {
@@ -15,6 +16,7 @@
     url('guest\\font\\SpoqaHanSans\\SpoqaHanSans_subset\\SpoqaHanSansRegular.woff2') format('woff2'),
     url('guest\\font\\SpoqaHanSans\\SpoqaHanSans_subset\\SpoqaHanSans/SpoqaHanSansRegular.woff') format('woff'),
     url('guest\\font\\SpoqaHanSans\\SpoqaHanSans_subset\\SpoqaHanSansRegular.ttf') format('truetype');
+    font-display: swap;
 }
 
 @font-face {
@@ -24,6 +26,7 @@
     url('guest\\font\\SpoqaHanSans\\SpoqaHanSans_subset\\SpoqaHanSansLight.woff2') format('woff2'),
     url('guest\\font\\SpoqaHanSans\\SpoqaHanSans_subset\\SpoqaHanSansLight.woff') format('woff'),
     url('guest\\font\\SpoqaHanSans\\SpoqaHanSans_subset\\SpoqaHanSansLight.ttf') format('truetype');
+    font-display: swap;
 }
 
 @font-face {
@@ -33,6 +36,7 @@
     url('guest\\font\\SpoqaHanSans\\SpoqaHanSans_subset\\SpoqaHanSansThin.woff2') format('woff2'),
     url('guest\\font\\SpoqaHanSans\\SpoqaHanSans_subset\\SpoqaHanSansThin.woff') format('woff'),
     url('guest\\font\\SpoqaHanSans\\SpoqaHanSans_subset\\SpoqaHanSansThin.ttf') format('truetype');
+    font-display: swap;
 }
 
 :root {
