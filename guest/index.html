@@ -37,7 +37,7 @@
         </div>
 
         
-        <div id="container" style="padding-bottom: 10px;">
+        <div id="container"">
             <div style="overflow: hidden;">
                 <div class="coupon">
                     <div style="width: fit-content; font-weight: 100;  font-size: small;">현재 포인트</div>
@@ -223,7 +223,7 @@
 
                             const date = new Date();
                             //TODO 12시 이전 동아리 적기
-                            if ((date.getHours() >= 8) && (Value == "동아리" || Value == "동아리11")) {
+                            if ((date.getHours() >= 12) && (Value == "동아리" || Value == "동아리11")) {
                                 continue;
                             }
 
