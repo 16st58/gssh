@@ -346,6 +346,16 @@ body {
     -webkit-animation: fadein 0.5s, fadeout 0.5s 4.6s;
     animation: fadein 0.5s, fadeout 0.5s 4.6s;
     }
+    
+    table{ border-collapse : collapse; }  /*이중선 제거*/
+    th,td{
+         text-align: center;
+         border: 1px solid #000;
+         
+         vertical-align: top;	/* 위 */
+         vertical-align: bottom;   /* 아래 */
+         vertical-align: middle;   /* 가운데 */
+       }
 
 /* Animations to fade the snackbar in and out */
 @-webkit-keyframes fadein {
