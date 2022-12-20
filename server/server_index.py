@@ -5,7 +5,6 @@ from firebase_admin import credentials
 from firebase_admin import db
 
 boothName = ['동아리', '동아리1', '동아리11']
-ownerName = []
 memberNumber = {} #동아리 방문한 회원 수(중복 제외)
 reMemberNumber = {} #재방문한 사람 수
 totalMemberNumber = {} #전체 동아리 방문 수(중복 포함)
@@ -32,12 +31,16 @@ def main():
         reMemberNumber = {} #재방문한 사람 수
         totalMemberNumber = {} #전체 동아리 방문 수(중복 포함)
         recentMemberNumber = {} #최근 동아리 방문 수
+        usePoint = {} #지출한 포인트(방문자 기준)
+        getPoint = {} #적립한 포인트(방문자 기준)
 
         for i in boothName:
             memberNumber[i] = 0 #동아리 방문한 회원 수(중복 제외)
             reMemberNumber[i] = 0 #재방문한 사람 수
             totalMemberNumber[i] = 0 #전체 동아리 방문 수(중복 포함)
             recentMemberNumber[i] = 0 #전체 동아리 방문 수(중복 포함)
+            usePoint[i] = 0 #지출한 포인트(방문자 기준)
+            getPoint[i] = 0 #적립한 포인트(방문자 기준)
 
         readFirebaseJson = readFirebase("user/")
         print(readFirebaseJson)
@@ -54,6 +57,14 @@ def main():
                             recentMemberNumber[boothName[j]]+=1
                     except:
                         pass
+                    try:
+                        usePoint[boothName[j]] += int(readFirebaseJson[i]["방문한부스"][boothName[j]]['사용한 포인트'])
+                    except:
+                        pass
+                    try:
+                        getPoint[boothName[j]] += int(readFirebaseJson[i]["방문한부스"][boothName[j]]['적립한 포인트'])
+                    except:
+                        pass
         
         #memberNumber=sorted(memberNumber.items(),key=lambda x:x[1],reverse=True)
         #reMemberNumber=sorted(reMemberNumber.items(),key=lambda x:x[1],reverse=True)
@@ -63,6 +74,8 @@ def main():
         updateDataToDatabase("data/", "재방문 회원 수", reMemberNumber)
         updateDataToDatabase("data/", "총 방문 회원 수", totalMemberNumber)
         updateDataToDatabase("data/", "최근 방문 회원 수", recentMemberNumber)
+        updateDataToDatabase("data/", "사용한 포인트", usePoint)
+        updateDataToDatabase("data/", "적립한 포인트", getPoint)
         time.sleep(60)
 if __name__ == '__main__':
     initFirebase()
