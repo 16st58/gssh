@@ -1,0 +1,3 @@
+pyinstaller --add-binary "C:\Users\user\anaconda3\Lib\site-packages\pyzbar\*.dll;pyzbar" booth_index.py  
+pyinstaller --add-binary "C:\Users\user\anaconda3\Lib\site-packages\pyzbar\*.dll;pyzbar" --add-data=""C:\Users\user\Desktop\booth\booth.json";./" --add-data=""C:\Users\user\Desktop\booth\ticket-4321c-firebase-adminsdk-f5swo-372240e407.json";./" -w -F booth_index.py
+pyinstaller --add-binary "C:\Users\user\anaconda3\Lib\site-packages\pyzbar\*.dll;pyzbar" --add-data=""C:\Users\user\Desktop\booth\booth.json";./" --add-data=""C:\Users\user\Desktop\booth\ticket-4321c-firebase-adminsdk-f5swo-372240e407.json";./"  booth_index.py
