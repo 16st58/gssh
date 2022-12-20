@@ -14,7 +14,6 @@ import keyboard
 
 boothName = '동아리'
 
-boothList = ['동아리', '동아리1', '동아리2', '동아리3', '동아리4']
 userName = []
 userTime = []
 
@@ -82,6 +81,15 @@ def read_barcodes(frame):
     """
     바코드 읽는 함수
     """
+    
+        
+    if keyboard.is_pressed(' '):
+        fontpath = "fonts/gulim.ttc"
+        font = ImageFont.truetype(fontpath, 40)
+        img_pil = Image.fromarray(frame)
+        draw = ImageDraw.Draw(img_pil)
+        draw.text((20, 20),  "포인트 지급 모드", font=font, fill=(255, 0, 255))
+        frame = np.array(img_pil)
     barcodes = pyzbar.decode(frame)
     for barcode in barcodes:
         x, y, w, h = barcode.rect
@@ -97,7 +105,32 @@ def read_barcodes(frame):
         # 3
         if(barcode_info.isdigit()):
 
-            if not keyboard.is_pressed(" "):
+            if keyboard.is_pressed(' '):
+                fontpath = "fonts/gulim.ttc"
+                font = ImageFont.truetype(fontpath, 40)
+                img_pil = Image.fromarray(frame)
+                draw = ImageDraw.Draw(img_pil)
+                if barcode_info not in userName:
+                    draw.text((20, 20),  "포인트가 지급되었어요", font=font, fill=(255, 0, 255))
+                    frame = np.array(img_pil)
+
+                    userName.append(barcode_info)
+                    userTime.append(time.time())
+                    #TODO 조건 완료시 포인트 지급
+                    nowCoupon = db.reference("user/" + barcode_info + "/쿠폰").get()
+                    updateDataToDatabase("user/" + barcode_info, "쿠폰", int(nowCoupon) + 100)
+                    print(userName)
+
+                elif time.time() - userTime[userName.index(barcode_info)] > 60:
+                    draw.text((20, 20),  "포인트가 지급되었어요", font=font, fill=(255, 0, 255))
+                    frame = np.array(img_pil)
+
+                    userTime[userName.index(barcode_info)] = time.time()
+                    #TODO 조건 완료시 포인트 지급
+                    nowCoupon = db.reference("user/" + barcode_info + "/쿠폰").get()
+                    updateDataToDatabase("user/" + barcode_info, "쿠폰", int(nowCoupon) + 100)
+                    print(userName)
+            else:   
                 fontpath = "fonts/gulim.ttc"
                 font = ImageFont.truetype(fontpath, 40)
                 img_pil = Image.fromarray(frame)
@@ -119,31 +152,8 @@ def read_barcodes(frame):
                     userTime[userName.index(barcode_info)] = time.time()
                     addOneToDatabase("user/" + barcode_info + "/" + boothName + "/방문한부스/", "방문수")
                     getPointCheck(barcode_info)
-            else:
-                fontpath = "fonts/gulim.ttc"
-                font = ImageFont.truetype(fontpath, 40)
-                img_pil = Image.fromarray(frame)
-                draw = ImageDraw.Draw(img_pil)
-                if barcode_info not in userName:
-                    draw.text((20, 20),  "포인트가 지급되었어요", font=font, fill=(255, 0, 255))
-                    frame = np.array(img_pil)
-
-                    userName.append(barcode_info)
-                    userTime.append(time.time())
-                    #TODO 조건 완료시 포인트 지급
-                    nowCoupon = db.reference("user/" + barcode_info + "/쿠폰").get()
-                    updateDataToDatabase("user/" + barcode_info, "쿠폰", int(nowCoupon) + 100)
-
-                elif time.time() - userTime[userName.index(barcode_info)] > 60:
-                    draw.text((20, 20),  "포인트가 지급되었어요", font=font, fill=(255, 0, 255))
-                    frame = np.array(img_pil)
-
-                    userTime[userName.index(barcode_info)] = time.time()
-                    #TODO 조건 완료시 포인트 지급
-                    nowCoupon = db.reference("user/" + barcode_info + "/쿠폰").get()
-                    updateDataToDatabase("user/" + barcode_info, "쿠폰", int(nowCoupon) + 100)
                 
-            updateDataToDatabase("user/" + barcode_info + "/방문한부스/" + boothName + "/", "방문시간", time.time())
+                updateDataToDatabase("user/" + barcode_info + "/방문한부스/" + boothName + "/", "방문시간", time.time())
     
     # return the bounding box of the barcode
     return frame
