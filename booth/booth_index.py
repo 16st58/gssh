@@ -80,6 +80,25 @@ def getPointCheck(barcode_info):
             print(alreadyBooth)
             updateDataToDatabase("user/" + barcode_info, "이미방문한부스", alreadyBooth)
 
+def pointUse(barcode_info, money):
+    """
+    포인트 사용을 기록하는 함수
+    """
+    nowCoupon = db.reference("user/" + barcode_info  + "/방문한부스/" + boothName + "/사용한포인트").get()
+    if nowCoupon==None:
+        updateDataToDatabase("user/" + barcode_info  + "/방문한부스/" + boothName, "사용한포인트", money)
+    else:
+        updateDataToDatabase("user/" + barcode_info  + "/방문한부스/" + boothName, "사용한포인트", nowCoupon + money)
+def pointSave(barcode_info, money):
+    """
+    포인트 적립을 기록하는 함수
+    """
+    nowCoupon = db.reference("user/" + barcode_info  + "/방문한부스/" + boothName + "/적립한포인트").get()
+    if nowCoupon==None:
+        updateDataToDatabase("user/" + barcode_info  + "/방문한부스/" + boothName, "적립한포인트", money)
+    else:
+        updateDataToDatabase("user/" + barcode_info  + "/방문한부스/" + boothName, "적립한포인트", nowCoupon + money)
+
 
 def read_barcodes(frame):
     """
@@ -101,15 +120,18 @@ def read_barcodes(frame):
         if Mode == 1:
             money = int(input("사용할 금액을 적어주세요. : "))
             nowCoupon = db.reference("user/" + barcode_info + "/쿠폰").get()
-            if money > nowCoupon:
-                print("")
+            if money > nowCoupon or money < 0:
+                print("사용할 포인트가 보유한 포인트보다 적어야 해요")
+                break
             updateDataToDatabase("user/" + barcode_info, "쿠폰", int(nowCoupon) - money)
+            pointUse(barcode_info, money)
         elif Mode == 2:
             money = int(input("적립할 금액을 적어주세요. : "))
             nowCoupon = db.reference("user/" + barcode_info + "/쿠폰").get()
             if money > nowCoupon:
                 print("")
             updateDataToDatabase("user/" + barcode_info, "쿠폰", int(nowCoupon) + money)
+            pointSave(barcode_info, money)
     # return the bounding box of the barcode
     return frame
 
