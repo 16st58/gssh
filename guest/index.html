@@ -141,6 +141,10 @@
             //console.log("Image URL: " + responsePayload.picture);
             //console.log("Email: " + responsePayload.email); 
 
+            if(responsePayload.family_name != "16기" && responsePayload.family_name != "15기" && responsePayload.family_name != "14기") {
+                alert("학교 계정으로 로그인 해야 해요");
+                throw (new Error('학교 계정으로 로그인 해야 해요'));
+            }
             generateBarcode(responsePayload.sub);
 
             var DBref = firebase.database().ref("/user/"+responsePayload.sub+"/쿠폰");
