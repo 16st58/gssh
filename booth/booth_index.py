@@ -19,7 +19,7 @@ userTime = []
 
 def initFirebase():
     #Firebase database 인증 및 앱 초기화
-    cred = credentials.Certificate('booth\\ticket-4321c-firebase-adminsdk-f5swo-372240e407.json')
+    cred = credentials.Certificate('.\\ticket-4321c-firebase-adminsdk-f5swo-372240e407.json')
     firebase_admin.initialize_app(cred,{
         'databaseURL' : 'https://ticket-4321c-default-rtdb.firebaseio.com'
     })
@@ -51,7 +51,7 @@ def getPointCheck(barcode_info):
     부스json파일을 읽고 쿠폰을 받을 수 있는 조건인지 검사, 이후 쿠폰 발행
     @param barcode_info : 바코드 번호(개인 번호)
     """
-    file_path = "booth\\booth.json"
+    file_path = ".\\booth.json"
 
     with open(file_path, 'r', encoding='UTF8') as file:
         data = json.load(file)
@@ -160,8 +160,8 @@ def read_barcodes(frame):
 
 def main():
     camera = cv2.VideoCapture(0)
-    #cv2.namedWindow('QR코드 스캔 해주세요.', cv2.WND_PROP_FULLSCREEN)
-    #cv2.setWindowProperty('QR코드 스캔 해주세요.', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+    cv2.namedWindow('QR코드 스캔 해주세요.', cv2.WND_PROP_FULLSCREEN)
+    cv2.setWindowProperty('QR코드 스캔 해주세요.', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
     ret, frame = camera.read()
     while ret:
         ret, frame = camera.read()
@@ -175,5 +175,12 @@ def main():
     cv2.destroyAllWindows()
 
 if __name__ == '__main__':
+    while True:
+        a=int(input("코드를 입력하세요. : "))
+        if a == 1:
+            boothName = "동아리"
+            break
+        else:
+            pass
     initFirebase()
     main()
