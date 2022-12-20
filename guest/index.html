@@ -172,6 +172,8 @@
                     // after this here we are calling both the function so it works
                     start();
                     stop();
+                } else if (snapshot.val() < Number(document.getElementById('couponPrice').innerText) && isFirst == true) {
+                    point_use_popup_show(Number(document.getElementById('couponPrice').innerText) - snapshot.val())
                 }
                 isFirst = true
 
