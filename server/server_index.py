@@ -58,11 +58,11 @@ def main():
                     except:
                         pass
                     try:
-                        usePoint[boothName[j]] += int(readFirebaseJson[i]["방문한부스"][boothName[j]]['사용한 포인트'])
+                        usePoint[boothName[j]] += int(readFirebaseJson[i]["방문한부스"][boothName[j]]['사용한포인트'])
                     except:
                         pass
                     try:
-                        getPoint[boothName[j]] += int(readFirebaseJson[i]["방문한부스"][boothName[j]]['적립한 포인트'])
+                        getPoint[boothName[j]] += int(readFirebaseJson[i]["방문한부스"][boothName[j]]['적립한포인트'])
                     except:
                         pass
         
