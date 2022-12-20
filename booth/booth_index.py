@@ -17,9 +17,12 @@ boothName = '동아리'
 userName = []
 userTime = []
 
+Mode = ''
+
 def initFirebase():
     #Firebase database 인증 및 앱 초기화
-    cred = credentials.Certificate('.\\ticket-4321c-firebase-adminsdk-f5swo-372240e407.json')
+    #TODO cred = credentials.Certificate('./ticket-4321c-firebase-adminsdk-f5swo-372240e407.json')
+    cred = credentials.Certificate('booth/ticket-4321c-firebase-adminsdk-f5swo-372240e407.json')
     firebase_admin.initialize_app(cred,{
         'databaseURL' : 'https://ticket-4321c-default-rtdb.firebaseio.com'
     })
@@ -51,7 +54,8 @@ def getPointCheck(barcode_info):
     부스json파일을 읽고 쿠폰을 받을 수 있는 조건인지 검사, 이후 쿠폰 발행
     @param barcode_info : 바코드 번호(개인 번호)
     """
-    file_path = ".\\booth.json"
+    #TODO file_path = ".\\booth.json"
+    file_path = "booth/booth.json"
 
     with open(file_path, 'r', encoding='UTF8') as file:
         data = json.load(file)
@@ -82,14 +86,35 @@ def read_barcodes(frame):
     바코드 읽는 함수
     """
     
-        
-    if keyboard.is_pressed(' '):
-        fontpath = "fonts/gulim.ttc"
-        font = ImageFont.truetype(fontpath, 40)
-        img_pil = Image.fromarray(frame)
-        draw = ImageDraw.Draw(img_pil)
-        draw.text((20, 20),  "포인트 지급 모드", font=font, fill=(255, 0, 255))
-        frame = np.array(img_pil)
+    barcodes = pyzbar.decode(frame)
+    for barcode in barcodes:
+        x, y, w, h = barcode.rect
+        # 1
+        barcode_info = barcode.data.decode('utf-8')
+        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+
+        # 2
+        font = cv2.FONT_HERSHEY_DUPLEX
+        cv2.putText(frame, barcode_info, (x + 6, y - 6), font, 2.0, (255, 255, 255), 1)
+        print("(1):포인트 사용, (2)포인트 적립")
+        Mode = int(input("사용할 기능을 적어주세요. : "))
+        if Mode == 1:
+            money = int(input("사용할 금액을 적어주세요. : "))
+            nowCoupon = db.reference("user/" + barcode_info + "/쿠폰").get()
+            if money > nowCoupon:
+                print("")
+            updateDataToDatabase("user/" + barcode_info, "쿠폰", int(nowCoupon) - money)
+        elif Mode == 2:
+            money = int(input("적립할 금액을 적어주세요. : "))
+            nowCoupon = db.reference("user/" + barcode_info + "/쿠폰").get()
+            if money > nowCoupon:
+                print("")
+            updateDataToDatabase("user/" + barcode_info, "쿠폰", int(nowCoupon) + money)
+    # return the bounding box of the barcode
+    return frame
+
+"""
+
     barcodes = pyzbar.decode(frame)
     for barcode in barcodes:
         x, y, w, h = barcode.rect
@@ -104,7 +129,6 @@ def read_barcodes(frame):
 
         # 3
         if(barcode_info.isdigit()):
-
             if keyboard.is_pressed(' '):
                 fontpath = "fonts/gulim.ttc"
                 font = ImageFont.truetype(fontpath, 40)
@@ -139,9 +163,7 @@ def read_barcodes(frame):
                 frame = np.array(img_pil)
 
                 if barcode_info not in userName:
-                    """
-                    바코드가 처음 인식 되었을 때
-                    """
+                    #바코드가 처음 인식 되었을 때
                     userName.append(barcode_info)
                     userTime.append(time.time())
                     updateDataToDatabase("user/" + barcode_info + "/방문한부스/" + boothName + "/", "방문수", 1)
@@ -154,14 +176,13 @@ def read_barcodes(frame):
                     getPointCheck(barcode_info)
                 
                 updateDataToDatabase("user/" + barcode_info + "/방문한부스/" + boothName + "/", "방문시간", time.time())
+                """
     
-    # return the bounding box of the barcode
-    return frame
 
 def main():
     camera = cv2.VideoCapture(0)
-    cv2.namedWindow('QR코드 스캔 해주세요.', cv2.WND_PROP_FULLSCREEN)
-    cv2.setWindowProperty('QR코드 스캔 해주세요.', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+    #cv2.namedWindow('QR코드 스캔 해주세요.', cv2.WND_PROP_FULLSCREEN)
+    #cv2.setWindowProperty('QR코드 스캔 해주세요.', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
     ret, frame = camera.read()
     while ret:
         ret, frame = camera.read()

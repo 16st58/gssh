@@ -314,6 +314,9 @@
             if(Number(document.getElementById('couponPrice').innerText) < Number(document.getElementById('input').value)) {
                 document.getElementById("error_snackbar").style.display ='block';
                 $("#error_snackbar").addClass("vibration_animation");
+            } else {
+                document.getElementById("error_snackbar").style.display = 'none';
+                $("#error_snackbar").removeClass("vibration_animation")
             }
         });
 
