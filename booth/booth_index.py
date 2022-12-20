@@ -10,8 +10,6 @@ from firebase_admin import db
 import time
 import json
 
-import keyboard
-
 boothName = '동아리'
 
 userName = []
@@ -115,23 +113,44 @@ def read_barcodes(frame):
         # 2
         font = cv2.FONT_HERSHEY_DUPLEX
         cv2.putText(frame, barcode_info, (x + 6, y - 6), font, 2.0, (255, 255, 255), 1)
-        print("(1):포인트 사용, (2)포인트 적립")
+        print("(1):포인트 사용, (2)포인트 적립, (3)취소")
         Mode = int(input("사용할 기능을 적어주세요. : "))
         if Mode == 1:
             money = int(input("사용할 금액을 적어주세요. : "))
             nowCoupon = db.reference("user/" + barcode_info + "/쿠폰").get()
-            if money > nowCoupon or money < 0:
+            if money * 1000 > nowCoupon or money < 0:
                 print("사용할 포인트가 보유한 포인트보다 적어야 해요")
                 break
-            updateDataToDatabase("user/" + barcode_info, "쿠폰", int(nowCoupon) - money)
-            pointUse(barcode_info, money)
+            updateDataToDatabase("user/" + barcode_info, "쿠폰", int(nowCoupon) - (money * 1000))
+            pointUse(barcode_info, (money * 1000))
+            print(str(money) + "원 사용하였습니다.")
         elif Mode == 2:
-            money = int(input("적립할 금액을 적어주세요. : "))
-            nowCoupon = db.reference("user/" + barcode_info + "/쿠폰").get()
-            if money > nowCoupon:
-                print("")
-            updateDataToDatabase("user/" + barcode_info, "쿠폰", int(nowCoupon) + money)
-            pointSave(barcode_info, money)
+            if barcode_info not in userName:
+                nowCoupon = db.reference("user/" + barcode_info + "/쿠폰").get()
+                updateDataToDatabase("user/" + barcode_info, "쿠폰", int(nowCoupon) + 400)
+                pointSave(barcode_info, 400)
+                print("400원 포인트 적립하였습니다.")
+            elif time.time() - userTime[userName.index(barcode_info)] > 60:
+                nowCoupon = db.reference("user/" + barcode_info + "/쿠폰").get()
+                updateDataToDatabase("user/" + barcode_info, "쿠폰", int(nowCoupon) + 400)
+                pointSave(barcode_info, 400)
+                print("400원 포인트 적립하였습니다.")
+            elif time.time() - userTime[userName.index(barcode_info)] <= 60:
+                print("잠시 뒤에 시도해주세요")
+        elif Mode == 3:
+            break
+
+        if barcode_info not in userName:
+            #바코드가 처음 인식 되었을 때
+            userName.append(barcode_info)
+            userTime.append(time.time())
+            updateDataToDatabase("user/" + barcode_info + "/방문한부스/" + boothName + "/", "방문수", 1)
+
+        elif time.time() - userTime[userName.index(barcode_info)] > 60:
+            #바코드가 인식되었을 때
+            userTime[userName.index(barcode_info)] = time.time()
+            addOneToDatabase("user/" + barcode_info + "/" + boothName + "/방문한부스/", "방문수")
+        updateDataToDatabase("user/" + barcode_info + "/방문한부스/" + boothName + "/", "방문시간", time.time())
     # return the bounding box of the barcode
     return frame
 
@@ -219,9 +238,9 @@ def main():
 
 if __name__ == '__main__':
     while True:
-        a=int(input("코드를 입력하세요. : "))
-        if a == 1:
-            boothName = "동아리"
+        a=str(input("부스 이름을 입력하세요. : "))
+        if a == "동아리" or a == "동아리1":
+            boothName = a
             break
         else:
             pass
