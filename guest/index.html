@@ -215,9 +215,15 @@
                         }
 
                         for(let i = 0; i < n; i++) {
-                            const Value = arr.sort((a, b) => a[1] - b[1])[i][0]
+                            const Value = arr.sort((a, b) => a[1] - b[1])[i][0];
 
-                            const contentBody = document.getElementById('boothList')
+                            const date = new Date();
+                            //TODO 12시 이전 동아리 적기
+                            if ((date.getHours() >= 8) && (Value == "동아리" || Value == "동아리11")) {
+                                continue;
+                            }
+
+                            const contentBody = document.getElementById('boothList');
                             const bodySection = document.createElement('div');
                             const viewText = document.createElement('div');
                             const congestionviewText = document.createElement('div');
