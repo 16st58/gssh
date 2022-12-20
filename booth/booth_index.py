@@ -116,7 +116,7 @@ def read_barcodes(frame):
         print("(1):포인트 사용, (2)포인트 적립, (3)취소")
         Mode = int(input("사용할 기능을 적어주세요. : "))
         if Mode == 1:
-            money = int(input("사용할 금액을 적어주세요. : "))
+            money = int(input("사용할 금액을 적어주세요. (1000원 단위) : "))
             nowCoupon = db.reference("user/" + barcode_info + "/쿠폰").get()
             if money * 1000 > nowCoupon or money < 0:
                 print("사용할 포인트가 보유한 포인트보다 적어야 해요")
