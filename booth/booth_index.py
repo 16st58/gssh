@@ -1,6 +1,4 @@
 import cv2
-from PIL import ImageFont, ImageDraw, Image
-import numpy as np
 from pyzbar import pyzbar
 
 import firebase_admin
