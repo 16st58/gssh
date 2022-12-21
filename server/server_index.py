@@ -11,7 +11,7 @@ totalMemberNumber = {} #전체 동아리 방문 수(중복 포함)
 
 def initFirebase():
     #Firebase database 인증 및 앱 초기화
-    cred = credentials.Certificate('server\\ticket-4321c-firebase-adminsdk-f5swo-372240e407.json')
+    cred = credentials.Certificate('ticket-4321c-firebase-adminsdk-f5swo-372240e407.json')
     firebase_admin.initialize_app(cred,{
         'databaseURL' : 'https://ticket-4321c-default-rtdb.firebaseio.com'
     })
@@ -76,7 +76,7 @@ def main():
         updateDataToDatabase("data/", "최근 방문 회원 수", recentMemberNumber)
         updateDataToDatabase("data/", "사용한 포인트", usePoint)
         updateDataToDatabase("data/", "적립한 포인트", getPoint)
-        time.sleep(60)
+        time.sleep(3*60)
 if __name__ == '__main__':
     initFirebase()
     main()
