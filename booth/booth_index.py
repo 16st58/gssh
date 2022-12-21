@@ -121,7 +121,7 @@ def read_barcodes(frame):
                 break
             updateDataToDatabase("user/" + barcode_info, "쿠폰", int(nowCoupon) - (money * 1000))
             pointUse(barcode_info, (money * 1000))
-            print(str(money) + "원 사용하였습니다.")
+            print(str(money*1000) + "원 사용하였습니다.")
         elif Mode == 2:
             if barcode_info not in userName:
                 nowCoupon = db.reference("user/" + barcode_info + "/쿠폰").get()

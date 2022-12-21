@@ -30,7 +30,7 @@
         <div id="g_id_onload"
          data-client_id="509820375172-u6v9d1occckq49dia67nrejfs0vj8jmh.apps.googleusercontent.com"
          data-callback="handleCredentialResponse"></div>
-        <div class="g_id_signin" data-shape="circle" ></div>
+        <div class="g_id_signin" data-shape="circle" style="margin-left: 20px;"></div>
         
         <div id="container">
             <div id="barcodeTarget"><img id="pleaseLogin" style="width: 100%;" src="\image\pleaseqrcode.webp" alt="로그인해주세요"></div>
@@ -88,7 +88,7 @@
                 </video>
                 <div id="popup_head1" style="text-align: center; margin-left: 0; margin-top: 10px;">0원을 사용했어요</div>
                 <div class="button_area" style="width: inherit;">
-                    <button id="point_use_close">닫기</button>
+                    <button id="point_use_close" onclick="point_use_popup_close()">닫기</button>
                 </div>
             </div>
             </div>
@@ -317,7 +317,7 @@
          */
         function point_use_popup_show(use_point_value) {
             console.log(use_point_value)
-            document.getElementById("point_use_popup").className = "background no_animation_show";
+            document.getElementById("point_use_popup").className = "background show";
             document.getElementById("popup_head1").innerText = use_point_value+"원을 사용했어요";
         }
 
