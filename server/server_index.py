@@ -4,7 +4,7 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
 
-boothName = ['동아리', '동아리1', '동아리11']
+boothName = ['1-1', '1-2', '1-3', '2-1', '2-2', '2-3', '3-1', '3-2', '3-3', '물리', '화학', '생물', '수학', '지구과학', '정보']
 memberNumber = {} #동아리 방문한 회원 수(중복 제외)
 reMemberNumber = {} #재방문한 사람 수
 totalMemberNumber = {} #전체 동아리 방문 수(중복 포함)
