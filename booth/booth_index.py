@@ -8,7 +8,7 @@ from firebase_admin import db
 import time
 import json
 
-boothName = '동아리'
+boothName = ''
 
 userName = []
 userTime = []
@@ -237,7 +237,7 @@ def main():
 if __name__ == '__main__':
     while True:
         a=str(input("부스 이름을 입력하세요. : "))
-        if a == "동아리" or a == "동아리1":
+        if a == "1-1" or a == "1-2" or a == "1-3" or a == "2-1" or a == "2-2" or a == "2-3" or a == "3-1" or a == "3-2" or a == "3-3" or a == "물리" or a == "화학" or a == "생물" or a == "수학" or a == "지구과학" or a == "정보":
             boothName = a
             break
         else:
