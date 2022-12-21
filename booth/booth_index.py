@@ -147,7 +147,7 @@ def read_barcodes(frame):
         elif time.time() - userTime[userName.index(barcode_info)] > 60:
             #바코드가 인식되었을 때
             userTime[userName.index(barcode_info)] = time.time()
-            addOneToDatabase("user/" + barcode_info + "/" + boothName + "/방문한부스/", "방문수")
+            addOneToDatabase("user/" + barcode_info + "/방문한부스/" + boothName, "방문수")
         updateDataToDatabase("user/" + barcode_info + "/방문한부스/" + boothName + "/", "방문시간", time.time())
     # return the bounding box of the barcode
     return frame
