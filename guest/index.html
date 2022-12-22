@@ -214,11 +214,14 @@
                         var n = 0;
                         var sortlength = arr.sort((a, b) => a[1] - b[1]).lenth
                         
+                        var cnt = 0;
+                        /*
                         if (sortlength < 5) {
                             n=sortlength
                         } else {
                             n=5
                         }
+                        */
 
                         let i = 0;
 
@@ -230,6 +233,11 @@
                             //TODO 12시 이전 동아리 적기
                             if ((date.getHours() >= 12) && (Value == "1-1" || Value == "1-2" || Value == "1-3" || Value == "2-1" || Value == "2-2" || Value == "2-3" || Value == "3-1" || Value == "3-2" || Value == "3-3")) {
                                 continue;
+                            }
+                            cnt++;
+
+                            if (cnt >=4) {
+                                break;
                             }
 
                             const contentBody = document.getElementById('boothList');
