@@ -227,9 +227,11 @@
                             //TODO 12시 이전 동아리 적기
                             if ((date.getHours() >= 12) && (Value == "1-1" || Value == "1-2" || Value == "1-3" || Value == "2-1" || Value == "2-2" || Value == "2-3" || Value == "3-1" || Value == "3-2" || Value == "3-3")) {
                                 continue;
+                                i++
                             }
                             if ((date.getHours() < 12) && (Value == "물리" || Value == "생물" || Value == "지구과학" || Value == "화학" || Value == "정보" || Value == "수학")) {
                                 continue;
+                                i++
                             }
 
                             const contentBody = document.getElementById('boothList');
