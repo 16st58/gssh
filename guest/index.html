@@ -211,8 +211,8 @@
                         
                         $('#boothList').empty();
 
-                        var n = 0;
                         var sortlength = arr.sort((a, b) => a[1] - b[1]).lenth
+                        var n = sortlength;
                         
                         var cnt = 0;
                         /*
@@ -236,7 +236,7 @@
                             }
                             cnt++;
 
-                            if (cnt >=4) {
+                            if (cnt >= 4) {
                                 break;
                             }
 
