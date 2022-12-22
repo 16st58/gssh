@@ -11,7 +11,7 @@ totalMemberNumber = {} #전체 동아리 방문 수(중복 포함)
 
 def initFirebase():
     #Firebase database 인증 및 앱 초기화
-    cred = credentials.Certificate('ticket-4321c-firebase-adminsdk-f5swo-372240e407.json')
+    cred = credentials.Certificate('server\\ticket-4321c-firebase-adminsdk-f5swo-372240e407.json')
     firebase_admin.initialize_app(cred,{
         'databaseURL' : 'https://ticket-4321c-default-rtdb.firebaseio.com'
     })
